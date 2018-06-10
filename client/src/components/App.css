@@ -1,0 +1,25 @@
+@import '~antd/dist/antd.css';
+
+.group-header {
+    background-color: #f8f8f8;
+}
+
+.group-button {
+    margin: 10px;
+    font-size: 15px;
+    position: relative;
+    top: 8px
+}
+
+.group-title {
+    margin: 5px;
+    font-size: 20px;
+}
+
+.todo-item {
+    padding: 0;
+}
+
+.item-button {
+    border: none ;
+}

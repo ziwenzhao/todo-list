@@ -48,7 +48,7 @@ class CreateTodoForm extends Component {
             <Form onSubmit={this.handleSubmit}>
                 <FormItem {...formItemLayout} label="Title">
                     {getFieldDecorator('title', {
-                        rules: [{ required: true, message: 'Please input title!' }],
+                        rules: [{ required: true, message: 'Please input the title!' }],
                     })(
                         <Input />
                     )}
@@ -92,7 +92,7 @@ class CreateTodoForm extends Component {
         event.preventDefault();
         this.props.form.validateFields((err, values) => {
             if (err) {
-                message.error('Form has invalid fields');
+                message.error('The form has invalid fields');
             } else {
                 const todo = {
                     ...this.props.form.getFieldsValue(),

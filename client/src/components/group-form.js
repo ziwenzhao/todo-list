@@ -3,7 +3,8 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { Form, Input, Button, message } from 'antd';
 import axios from 'axios';
-import { addGroup, updateGroup } from '../actions/group-action'
+import { addGroup, updateGroup } from '../actions/group-action';
+import { sortCompareFunc } from '../utils/utils';
 
 const FormItem = Form.Item;
 function hasErrors(fieldsError) {
@@ -46,7 +47,7 @@ class CreateGroupForm extends Component {
             <Form onSubmit={this.handleSubmit}>
                 <FormItem {...formItemLayout} label="Group Name">
                     {getFieldDecorator('name', {
-                        rules: [{ required: true, message: 'Please input group name!' }],
+                        rules: [{ required: true, message: 'Please input the group name!' }],
                     })(
                         <Input />
                     )}
@@ -75,16 +76,18 @@ class CreateGroupForm extends Component {
         event.preventDefault();
         this.props.form.validateFields((err, values) => {
             if (err) {
-                message.error('Form has invalid fields');
+                message.error('The form has invalid fields');
             } else {
                 if (this.props.mode === 'create') {
-                    axios.post('http://localhost:5000/todoGroup', { name: values.name })
-                        .then(res => {
-                            message.success('Group Created!');
-                            this.props.addGroup(res.data);
-                            this.props.closeModal();
-                        })
-                        .catch(e => { return message.error(e) });
+                    axios.get('http://localhost:5000/todoGroup').then(res => {
+                        const groups = res.data.sort(sortCompareFunc);
+                        const sort = groups[groups.length - 1].sort + 1;
+                        return axios.post('http://localhost:5000/todoGroup', { name: values.name, sort });
+                    }).then(res => {
+                        message.success('Group Created!');
+                        this.props.addGroup(res.data);
+                        this.props.closeModal();
+                    }).catch(e => { return message.error(e) });
                 } else {
                     axios.patch(`http://localhost:5000/todoGroup/${this.props.group.id}`, { name: values.name })
                         .then(res => {

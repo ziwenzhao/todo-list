@@ -77,7 +77,6 @@ class TodoList extends Component {
                 const tasks = [];
                 this.state.todos.forEach((todo, idx) => {
                     this.props.updateTodo(todo.id, { sort: idx });
-                    console.log(this.state.todos);
                     tasks.push(axios.patch('http://localhost:5000/todos/' + todo.id, { sort: idx }))
                 });
                 const res = await Promise.all(tasks).catch(e => { return message.error('Sorted failed') });
